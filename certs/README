@@ -1,0 +1,2 @@
+### Directory Purpose for Private Key Storage
+This directory is dedicated solely to storing the _private key_ required for signing operations within the SDK. The structure is designed to ensure clarity and separation of responsibilities, allowing users to securely manage and integrate private keys into their workflow.
