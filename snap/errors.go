@@ -45,12 +45,6 @@ func IsValidationError(err error) bool {
 	return ok && apiErr.StatusCode == http.StatusBadRequest
 }
 
-// IsRateLimitError checks if an error is a rate limit error
-func IsRateLimitError(err error) bool {
-	apiErr, ok := err.(*Error)
-	return ok && apiErr.StatusCode == http.StatusTooManyRequests
-}
-
 // IsServerError checks if an error is a server error
 func IsServerError(err error) bool {
 	apiErr, ok := err.(*Error)
