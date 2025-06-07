@@ -15,20 +15,19 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 )
 
 // Client represents a Faspay SendMe Snap API client
 type Client struct {
-	baseURL          string
-	httpClient       *http.Client
-	PartnerId        string `validate:"required,len=5"`
-	ExternalId       string `validate:"required,len=36"`
-	privateKeyPath   string
-	privateKeyString string
-	timeout          time.Duration
+	environment string
+	baseURL     string
+	httpClient  *http.Client
+	PartnerId   string `validate:"required,len=5"`
+	ExternalId  string `validate:"required,len=36"`
+	privateKey  []byte
+	timeout     time.Duration
 }
 
 // ClientOption is a function that configures a Client
@@ -50,24 +49,20 @@ func WithHTTPClient(httpClient *http.Client) ClientOption {
 }
 
 // NewClient initializes and returns a new Client instance with the given API key, secret, and optional configurations.
-func NewClient(partnerId, externalId string, privateKeyPath string, options ...ClientOption) (*Client, error) {
+func NewClient(partnerId, externalId string, privateKey []byte, options ...ClientOption) (*Client, error) {
 	client := &Client{
 		httpClient: &http.Client{
 			Timeout: time.Duration(DefaultTimeout) * time.Second,
 		},
-		PartnerId:      partnerId,
-		ExternalId:     externalId,
-		privateKeyPath: privateKeyPath,
-		timeout:        time.Duration(DefaultTimeout) * time.Second,
+		PartnerId:  partnerId,
+		ExternalId: externalId,
+		privateKey: privateKey,
+		timeout:    time.Duration(DefaultTimeout) * time.Second,
 	}
 
 	if client.baseURL == "" {
 		client.baseURL = DefaultBaseURL
-	}
-
-	err := client.setPrivateKey(privateKeyPath)
-	if err != nil {
-		return nil, err
+		client.environment = "sandbox"
 	}
 
 	// Apply options
@@ -87,17 +82,6 @@ func (c *Client) SetEnv(envType string) error {
 	} else {
 		return fmt.Errorf("invalid env type")
 	}
-	return nil
-}
-
-func (c *Client) setPrivateKey(pathStr string) error {
-	bytesPrivateKey, err := os.ReadFile(pathStr)
-	if err != nil {
-		return err
-	}
-
-	c.privateKeyString = string(bytesPrivateKey)
-
 	return nil
 }
 
@@ -124,7 +108,7 @@ func (c *Client) doRequest(ctx context.Context, method, path string, body interf
 	// Generate timestamp for signature
 	timestamp := time.Now().Format("2006-01-02T15:04:05-07:00")
 
-	signature, err := GenerateSignatureSnap(method, path, string(jsonBody), timestamp, c.privateKeyString)
+	signature, err := GenerateSignatureSnap(method, path, string(jsonBody), timestamp, c.privateKey)
 	if err != nil {
 		return nil, fmt.Errorf("error generating signature: %w", err)
 	}
@@ -147,7 +131,7 @@ func (c *Client) doRequest(ctx context.Context, method, path string, body interf
 	return resp, nil
 }
 
-func GenerateSignatureSnap(httpMethod, endpointUrl, requestBody, timeStamp, privateKeyPEM string) (string, error) {
+func GenerateSignatureSnap(httpMethod, endpointUrl, requestBody, timeStamp string, privateKeyPEM []byte) (string, error) {
 	// Remove escaped slashes (\/ → /)
 	minifiedBody := strings.ReplaceAll(requestBody, `\/`, `/`)
 
