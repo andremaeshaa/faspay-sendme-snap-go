@@ -77,8 +77,10 @@ func NewClient(partnerId, externalId string, privateKey []byte, options ...Clien
 func (c *Client) SetEnv(envType string) error {
 	if envType == "sandbox" {
 		c.baseURL = baseUrlSandbox
+		c.environment = "sandbox"
 	} else if envType == "prod" {
 		c.baseURL = baseUrlProd
+		c.environment = "prod"
 	} else {
 		return fmt.Errorf("invalid env type")
 	}

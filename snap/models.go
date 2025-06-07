@@ -1,13 +1,13 @@
 package snap
 
 type ExternalAccountInquiryRequest struct {
-	BeneficiaryBankCode  string                 `json:"beneficiaryBankCode"`
-	BeneficiaryAccountNo string                 `json:"beneficiaryAccountNo"`
-	PartnerReferenceNo   string                 `json:"partnerReferenceNo"`
-	AdditionalInfo       *AdditionalInfoRequest `json:"additionalInfo"`
+	BeneficiaryBankCode  string                        `json:"beneficiaryBankCode"`
+	BeneficiaryAccountNo string                        `json:"beneficiaryAccountNo"`
+	PartnerReferenceNo   string                        `json:"partnerReferenceNo"`
+	AdditionalInfo       *AdditionalInfoInquiryAccount `json:"additionalInfo"`
 }
 
-type AdditionalInfoRequest struct {
+type AdditionalInfoInquiryAccount struct {
 	SourceAccount string `json:"sourceAccount"`
 }
 

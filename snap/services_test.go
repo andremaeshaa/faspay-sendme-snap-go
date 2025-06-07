@@ -41,7 +41,7 @@ func TestAccountInquiry(t *testing.T) {
 			BeneficiaryBankCode:  "008",
 			BeneficiaryAccountNo: "60004400184",
 			PartnerReferenceNo:   "20250606234037372",
-			AdditionalInfo: &AdditionalInfoRequest{
+			AdditionalInfo: &AdditionalInfoInquiryAccount{
 				SourceAccount: "9920017573",
 			},
 		}
@@ -83,7 +83,7 @@ func TestAccountInquiry(t *testing.T) {
 			BeneficiaryBankCode:  "008",
 			BeneficiaryAccountNo: "60004400184",
 			PartnerReferenceNo:   "20250606234037372",
-			AdditionalInfo: &AdditionalInfoRequest{
+			AdditionalInfo: &AdditionalInfoInquiryAccount{
 				SourceAccount: "9920017573",
 			},
 		}
@@ -114,7 +114,7 @@ func TestAccountInquiry(t *testing.T) {
 			BeneficiaryBankCode:  "008",
 			BeneficiaryAccountNo: "60004400184",
 			PartnerReferenceNo:   "20250606234037372",
-			AdditionalInfo: &AdditionalInfoRequest{
+			AdditionalInfo: &AdditionalInfoInquiryAccount{
 				SourceAccount: "9920017573",
 			},
 		}
@@ -148,7 +148,7 @@ func TestAccountInquiry(t *testing.T) {
 			BeneficiaryBankCode:  "008",
 			BeneficiaryAccountNo: "60004400184",
 			PartnerReferenceNo:   "20250606234037372",
-			AdditionalInfo: &AdditionalInfoRequest{
+			AdditionalInfo: &AdditionalInfoInquiryAccount{
 				SourceAccount: "9920017573",
 			},
 		}
@@ -182,7 +182,7 @@ func TestAccountInquiry(t *testing.T) {
 			BeneficiaryBankCode:  "008",
 			BeneficiaryAccountNo: "60004400184",
 			PartnerReferenceNo:   "20250606234037372",
-			AdditionalInfo: &AdditionalInfoRequest{
+			AdditionalInfo: &AdditionalInfoInquiryAccount{
 				SourceAccount: "9920017573",
 			},
 		}
@@ -190,6 +190,7 @@ func TestAccountInquiry(t *testing.T) {
 		// Call AccountInquiry
 		ctx := context.Background()
 		_, err = client.AccountInquiry(ctx, request)
+		println("error tot: ", err.Error())
 		if err == nil {
 			t.Error("Expected error when calling AccountInquiry with server error, got nil")
 		}
@@ -216,7 +217,7 @@ func TestAccountInquiry(t *testing.T) {
 			BeneficiaryBankCode:  "008",
 			BeneficiaryAccountNo: "60004400184",
 			PartnerReferenceNo:   "20250606234037372",
-			AdditionalInfo: &AdditionalInfoRequest{
+			AdditionalInfo: &AdditionalInfoInquiryAccount{
 				SourceAccount: "9920017573",
 			},
 		}

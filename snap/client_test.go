@@ -178,7 +178,7 @@ func TestDoRequest(t *testing.T) {
 		BeneficiaryBankCode:  "008",
 		BeneficiaryAccountNo: "60004400184",
 		PartnerReferenceNo:   "20250606234037372",
-		AdditionalInfo: &AdditionalInfoRequest{
+		AdditionalInfo: &AdditionalInfoInquiryAccount{
 			SourceAccount: "9920017573",
 		},
 	}

@@ -61,7 +61,7 @@ func MockSuccessResponse() *http.Response {
 	return MockResponse(http.StatusOK, body)
 }
 
-// MockErrorResponse creates a mock error HTTP response
+// MockErrorResponse creates a mock HTTP error response with a given status code, error code, message, and optional details.
 func MockErrorResponse(statusCode int, errorCode, errorMessage, errorDetails string) *http.Response {
 	body := `{
 		"responseCode": "` + errorCode + `",

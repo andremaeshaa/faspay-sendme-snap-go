@@ -53,7 +53,7 @@ func main() {
 		BeneficiaryBankCode:  "008",               // Bank code (e.g., "008" for Mandiri)
 		BeneficiaryAccountNo: "60004400184",       // Account number
 		PartnerReferenceNo:   "20250606234037372", // Your unique reference number
-		AdditionalInfo: &snap.AdditionalInfoRequest{
+		AdditionalInfo: &snap.AdditionalInfoInquiryAccount{
 			SourceAccount: "9920017573", // Source account number
 		},
 	}
