@@ -7,6 +7,51 @@ type ExternalAccountInquiryRequest struct {
 	AdditionalInfo       *AdditionalInfoInquiryAccount `json:"additionalInfo"`
 }
 
+type TransferInterBankRequest struct {
+	PartnerReferenceNo     string                           `json:"partnerReferenceNo"`
+	Amount                 *Amount                          `json:"amount"`
+	BeneficiaryAccountName string                           `json:"beneficiaryAccountName"`
+	BeneficiaryAccountNo   string                           `json:"beneficiaryAccountNo"`
+	BeneficiaryBankCode    string                           `json:"beneficiaryBankCode"`
+	BeneficiaryEmail       string                           `json:"beneficiaryEmail"`
+	SourceAccountNo        string                           `json:"sourceAccountNo"`
+	TransactionDate        string                           `json:"transactionDate"`
+	AdditionalInfo         *AdditionalInfoTransferInterBank `json:"additionalInfo"`
+}
+
+type Amount struct {
+	Value    string `json:"value"`
+	Currency string `json:"currency"`
+}
+
+type AdditionalInfoTransferInterBank struct {
+	InstructDate           string `json:"instructDate"`
+	TransactionDescription string `json:"transactionDescription"`
+	CallbackUrl            string `json:"callbackUrl"`
+}
+
+type AdditionalInfoTransferInterBankResponse struct {
+	BeneficiaryAccountName  string `json:"beneficiaryAccountName"`
+	BeneficiaryBankName     string `json:"beneficiaryBankName"`
+	InstructDate            string `json:"instructDate"`
+	TransactionDescription  string `json:"transactionDescription"`
+	CallbackUrl             string `json:"callbackUrl"`
+	LatestTransactionStatus string `json:"latestTransactionStatus"`
+	TransactionStatusDesc   string `json:"transactionStatusDesc"`
+}
+
+type TransferInterBankResponse struct {
+	ResponseCode         string                                   `json:"responseCode"`
+	ResponseMessage      string                                   `json:"responseMessage"`
+	ReferenceNo          string                                   `json:"referenceNo"`
+	PartnerReferenceNo   string                                   `json:"partnerReferenceNo"`
+	Amount               *Amount                                  `json:"amount"`
+	BeneficiaryAccountNo string                                   `json:"beneficiaryAccountNo"`
+	BeneficiaryBankCode  string                                   `json:"beneficiaryBankCode"`
+	SourceAccountNo      string                                   `json:"sourceAccountNo"`
+	AdditionalInfo       *AdditionalInfoTransferInterBankResponse `json:"additionalInfo"`
+}
+
 type AdditionalInfoInquiryAccount struct {
 	SourceAccount string `json:"sourceAccount"`
 }
