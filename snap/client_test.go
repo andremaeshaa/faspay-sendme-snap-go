@@ -206,3 +206,35 @@ func TestClient_CustomerTopupStatus(t *testing.T) {
 
 	println(response.ResponseMessage)
 }
+
+func TestClient_BillInquiry(t *testing.T) {
+	privateKey, err := os.ReadFile("../certs/enc_stg.key")
+	if err != nil {
+		t.Fatalf("Failed to read private key: %v", err)
+	}
+
+	client, err := NewClient("99999", privateKey)
+	if err != nil {
+		t.Fatalf("Failed to create client: %v", err)
+	}
+	err = client.SetEnv("prod")
+	if err != nil {
+		panic(err)
+	}
+
+	res, err := client.BillInquiry(context.Background(), &BillInquiryRequest{
+		PartnerReferenceNo: "20250609162756943",
+		PartnerServiceId:   "    7008",
+		CustomerNo:         "08000047816",
+		VirtualAccountNo:   "700808000047816",
+		AdditionalInfo: &AdditionalInfoBillInquiry{
+			BillerCode:    "013",
+			SourceAccount: "9920017573",
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	println(res.ResponseMessage)
+}

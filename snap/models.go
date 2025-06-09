@@ -239,3 +239,40 @@ type CustomerTopupStatusResponse struct {
 	TransactionStatusDesc      string                     `json:"transactionStatusDesc"`
 	AdditionalInfo             *AdditionalInfoTopupStatus `json:"additionalInfo"`
 }
+
+type BillInquiryRequest struct {
+	PartnerReferenceNo string                     `json:"partnerReferenceNo"`
+	PartnerServiceId   string                     `json:"partnerServiceId"`
+	CustomerNo         string                     `json:"customerNo"`
+	VirtualAccountNo   string                     `json:"virtualAccountNo"`
+	AdditionalInfo     *AdditionalInfoBillInquiry `json:"additionalInfo"`
+}
+
+type AdditionalInfoBillInquiry struct {
+	BillerCode    string `json:"billerCode"`
+	SourceAccount string `json:"sourceAccount"`
+}
+
+type BillInquiryResponse struct {
+	ResponseCode       string                             `json:"responseCode"`
+	ResponseMessage    string                             `json:"responseMessage"`
+	VirtualAccountData *VirtualAccountData                `json:"virtualAccountData"`
+	AdditionalInfo     *AdditionalInfoBillInquiryResponse `json:"additionalInfo"`
+}
+
+type VirtualAccountData struct {
+	PartnerServiceId      string  `json:"partnerServiceId"`
+	CustomerNo            string  `json:"customerNo"`
+	VirtualAccountNo      string  `json:"virtualAccountNo"`
+	VirtualAccountName    string  `json:"virtualAccountName"`
+	TotalAmount           *Amount `json:"totalAmount"`
+	VirtualAccountTrxType string  `json:"virtualAccountTrxType"`
+	PartnerReferenceNo    string  `json:"partnerReferenceNo"`
+}
+
+type AdditionalInfoBillInquiryResponse struct {
+	BillerCode    string `json:"billerCode"`
+	SourceAccount string `json:"sourceAccount"`
+	Status        string `json:"status"`
+	Message       string `json:"message"`
+}
