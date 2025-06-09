@@ -9,6 +9,10 @@ const (
 const (
 	EndpointTransferInterbank = "/account/v1.0/transfer-interbank"
 	EndpointAccountInquiry    = "/account/v1.0/account-inquiry-external"
+	EndpointInquiryStatus     = "/account/v1.0/transfer/status"
+	EndpointInquiryBalance    = "/account/v1.0/balance-inquiry"
+	EndpointHistoryList       = "/account/v1.0/transaction-history-list"
+	EndpointCustomerTopup     = "/account/v1.0/emoney/topup"
 )
 
 // Default configuration values
