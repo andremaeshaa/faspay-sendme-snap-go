@@ -31,7 +31,7 @@ func TestAccountInquiry(t *testing.T) {
 		})
 
 		// Create a client with the mock HTTP client
-		client, err := NewClient("99999", "20250607004236909", privateKey, WithHTTPClient(mockHTTPClient))
+		client, err := NewClient("99999", privateKey, WithHTTPClient(mockHTTPClient))
 		if err != nil {
 			t.Fatalf("Failed to create client: %v", err)
 		}
@@ -73,7 +73,7 @@ func TestAccountInquiry(t *testing.T) {
 		})
 
 		// Create a client with the mock HTTP client
-		client, err := NewClient("99999", "20250607004236909", privateKey, WithHTTPClient(mockHTTPClient))
+		client, err := NewClient("99999", privateKey, WithHTTPClient(mockHTTPClient))
 		if err != nil {
 			t.Fatalf("Failed to create client: %v", err)
 		}
@@ -104,7 +104,7 @@ func TestAccountInquiry(t *testing.T) {
 		})
 
 		// Create a client with the mock HTTP client
-		client, err := NewClient("99999", "20250607004236909", privateKey, WithHTTPClient(mockHTTPClient))
+		client, err := NewClient("99999", privateKey, WithHTTPClient(mockHTTPClient))
 		if err != nil {
 			t.Fatalf("Failed to create client: %v", err)
 		}
@@ -138,7 +138,7 @@ func TestAccountInquiry(t *testing.T) {
 		})
 
 		// Create a client with the mock HTTP client
-		client, err := NewClient("99999", "20250607004236909", privateKey, WithHTTPClient(mockHTTPClient))
+		client, err := NewClient("99999", privateKey, WithHTTPClient(mockHTTPClient))
 		if err != nil {
 			t.Fatalf("Failed to create client: %v", err)
 		}
@@ -172,7 +172,7 @@ func TestAccountInquiry(t *testing.T) {
 		})
 
 		// Create a client with the mock HTTP client
-		client, err := NewClient("99999", "20250607004236909", privateKey, WithHTTPClient(mockHTTPClient))
+		client, err := NewClient("99999", privateKey, WithHTTPClient(mockHTTPClient))
 		if err != nil {
 			t.Fatalf("Failed to create client: %v", err)
 		}
@@ -207,7 +207,7 @@ func TestAccountInquiry(t *testing.T) {
 		})
 
 		// Create a client with the mock HTTP client
-		client, err := NewClient("99999", "20250607004236909", privateKey, WithHTTPClient(mockHTTPClient))
+		client, err := NewClient("99999", privateKey, WithHTTPClient(mockHTTPClient))
 		if err != nil {
 			t.Fatalf("Failed to create client: %v", err)
 		}
