@@ -209,3 +209,33 @@ type CustomerTopupResponse struct {
 	Amount             *Amount                      `json:"amount"`
 	AdditionalInfo     *AdditionalInfoCustomerTopup `json:"additionalInfo"`
 }
+
+type CustomerTopupStatusRequest struct {
+	OriginalPartnerReferenceNo string `json:"originalPartnerReferenceNo"`
+	OriginalReferenceNo        string `json:"originalReferenceNo"`
+	ServiceCode                string `json:"serviceCode"`
+}
+
+type AdditionalInfoTopupStatus struct {
+	SourceAccount          string `json:"sourceAccount"`
+	TransactionDate        string `json:"transactionDate"`
+	PlatformCode           string `json:"platformCode"`
+	PlatformName           string `json:"platformName"`
+	CustomerNumber         string `json:"customerNumber"`
+	CustomerName           string `json:"customerName"`
+	TransactionDescription string `json:"transactionDescription"`
+	CallbackUrl            string `json:"callbackUrl"`
+	TransactionStatusDate  string `json:"transactionStatusDate"`
+}
+
+type CustomerTopupStatusResponse struct {
+	ResponseCode               string                     `json:"responseCode"`
+	ResponseMessage            string                     `json:"responseMessage"`
+	OriginalReferenceNo        string                     `json:"originalReferenceNo"`
+	OriginalPartnerReferenceNo string                     `json:"originalPartnerReferenceNo"`
+	ServiceCode                string                     `json:"serviceCode"`
+	Amount                     *Amount                    `json:"amount"`
+	LatestTransactionStatus    string                     `json:"latestTransactionStatus"`
+	TransactionStatusDesc      string                     `json:"transactionStatusDesc"`
+	AdditionalInfo             *AdditionalInfoTopupStatus `json:"additionalInfo"`
+}

@@ -179,3 +179,30 @@ func TestClient_CustomerTopup(t *testing.T) {
 
 	println(res.ResponseMessage)
 }
+
+func TestClient_CustomerTopupStatus(t *testing.T) {
+	privateKey, err := os.ReadFile("../certs/enc_stg.key")
+	if err != nil {
+		t.Fatalf("Failed to read private key: %v", err)
+	}
+
+	client, err := NewClient("99999", privateKey)
+	if err != nil {
+		t.Fatalf("Failed to create client: %v", err)
+	}
+	err = client.SetEnv("prod")
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := client.CustomerTopupStatus(context.Background(), &CustomerTopupStatusRequest{
+		OriginalPartnerReferenceNo: "20250609150352616",
+		OriginalReferenceNo:        "59732",
+		ServiceCode:                "38",
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	println(response.ResponseMessage)
+}

@@ -14,6 +14,7 @@ type Services interface {
 	InquiryBalance(ctx context.Context, request *InquiryBalanceRequest) (*InquiryBalanceResponse, error)
 	HistoryList(ctx context.Context, request *HistoryListRequest) (*HistoryListResponse, error)
 	CustomerTopup(ctx context.Context, request *CustomerTopupRequest) (*CustomerTopupResponse, error)
+	CustomerTopupStatus(ctx context.Context, request *CustomerTopupStatusRequest) (*CustomerTopupStatusResponse, error)
 }
 
 // SetEnv sets the environment for the client, switching the base URL between "sandbox" and "prod" environments.
@@ -117,6 +118,22 @@ func (c *Client) CustomerTopup(ctx context.Context, request *CustomerTopupReques
 	}
 
 	var response CustomerTopupResponse
+
+	err = c.parseResponse(resp, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (c *Client) CustomerTopupStatus(ctx context.Context, request *CustomerTopupStatusRequest) (*CustomerTopupStatusResponse, error) {
+	resp, err := c.doRequest(ctx, http.MethodPost, EndpointCustomerTopupStatus, request)
+	if err != nil {
+		return nil, err
+	}
+
+	var response CustomerTopupStatusResponse
 
 	err = c.parseResponse(resp, &response)
 	if err != nil {
