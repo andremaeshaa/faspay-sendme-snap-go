@@ -23,13 +23,11 @@ func main() {
 
 	// Step 2: Initialize the client
 	// Replace these values with your actual credentials
-	partnerId := "99999"              // Your 5-digit partner ID
-	externalId := "20250607004236909" // Your 36-character external ID
+	partnerId := "99999" // Your 5-digit partner ID
 
 	// Create a new client with a custom timeout
 	client, err := snap.NewClient(
 		partnerId,
-		externalId,
 		privateKey,
 		snap.WithTimeout(60*time.Second), // Optional: Set a custom timeout
 	)
