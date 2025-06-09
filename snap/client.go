@@ -111,6 +111,10 @@ func (c *Client) doRequest(ctx context.Context, method, path string, body interf
 	req.Header.Set("X-EXTERNAL-ID", c.generateRandomNumber())
 	req.Header.Set("CHANNEL-ID", "88001")
 
+	if c.environment == "sandbox" {
+		println("Info: Transaction will be processed in sandbox mode")
+	}
+
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("error executing request: %w", err)
