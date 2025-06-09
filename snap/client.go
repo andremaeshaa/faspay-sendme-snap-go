@@ -14,6 +14,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
+	mathRand "math/rand"
 	"net/http"
 	"strings"
 	"time"
@@ -24,8 +26,7 @@ type Client struct {
 	environment string
 	baseURL     string
 	httpClient  *http.Client
-	PartnerId   string `validate:"required,len=5"`
-	ExternalId  string `validate:"required,len=36"`
+	PartnerId   string
 	privateKey  []byte
 	timeout     time.Duration
 }
@@ -49,13 +50,12 @@ func WithHTTPClient(httpClient *http.Client) ClientOption {
 }
 
 // NewClient initializes and returns a new Client instance with the given API key, secret, and optional configurations.
-func NewClient(partnerId, externalId string, privateKey []byte, options ...ClientOption) (*Client, error) {
+func NewClient(partnerId string, privateKey []byte, options ...ClientOption) (Services, error) {
 	client := &Client{
 		httpClient: &http.Client{
 			Timeout: time.Duration(DefaultTimeout) * time.Second,
 		},
 		PartnerId:  partnerId,
-		ExternalId: externalId,
 		privateKey: privateKey,
 		timeout:    time.Duration(DefaultTimeout) * time.Second,
 	}
@@ -71,20 +71,6 @@ func NewClient(partnerId, externalId string, privateKey []byte, options ...Clien
 	}
 
 	return client, nil
-}
-
-// SetEnv sets the environment for the client, switching the base URL between "sandbox" and "prod" environments.
-func (c *Client) SetEnv(envType string) error {
-	if envType == "sandbox" {
-		c.baseURL = baseUrlSandbox
-		c.environment = "sandbox"
-	} else if envType == "prod" {
-		c.baseURL = baseUrlProd
-		c.environment = "prod"
-	} else {
-		return fmt.Errorf("invalid env type")
-	}
-	return nil
 }
 
 // doRequest performs an HTTP request with the specified method, URL path, and request body, returning the HTTP response.
@@ -110,7 +96,7 @@ func (c *Client) doRequest(ctx context.Context, method, path string, body interf
 	// Generate timestamp for signature
 	timestamp := time.Now().Format("2006-01-02T15:04:05-07:00")
 
-	signature, err := GenerateSignatureSnap(method, path, string(jsonBody), timestamp, c.privateKey)
+	signature, err := c.generateSignatureSnap(method, path, string(jsonBody), timestamp, c.privateKey)
 	if err != nil {
 		return nil, fmt.Errorf("error generating signature: %w", err)
 	}
@@ -122,7 +108,7 @@ func (c *Client) doRequest(ctx context.Context, method, path string, body interf
 	req.Header.Set("X-TIMESTAMP", timestamp)
 	req.Header.Set("X-SIGNATURE", signature)
 	req.Header.Set("X-PARTNER-ID", c.PartnerId)
-	req.Header.Set("X-EXTERNAL-ID", c.ExternalId)
+	req.Header.Set("X-EXTERNAL-ID", c.generateRandomNumber())
 	req.Header.Set("CHANNEL-ID", "88001")
 
 	resp, err := c.httpClient.Do(req)
@@ -133,7 +119,7 @@ func (c *Client) doRequest(ctx context.Context, method, path string, body interf
 	return resp, nil
 }
 
-func GenerateSignatureSnap(httpMethod, endpointUrl, requestBody, timeStamp string, privateKeyPEM []byte) (string, error) {
+func (c *Client) generateSignatureSnap(httpMethod, endpointUrl, requestBody, timeStamp string, privateKeyPEM []byte) (string, error) {
 	// Remove escaped slashes (\/ → /)
 	minifiedBody := strings.ReplaceAll(requestBody, `\/`, `/`)
 
@@ -177,6 +163,17 @@ func GenerateSignatureSnap(httpMethod, endpointUrl, requestBody, timeStamp strin
 	// Encode to base64
 	encodedSignature := base64.StdEncoding.EncodeToString(signature)
 	return encodedSignature, nil
+}
+
+func (c *Client) generateRandomNumber() string {
+	// Get current time in milliseconds (equivalent to microtime(true) * 1000)
+	milliseconds := math.Round(float64(time.Now().UnixNano()) / 1e6)
+
+	// Generate random number (assuming $rand is a random number)
+	randomNum := mathRand.Intn(1000) // Adjust range as needed
+
+	// Concatenate all parts (equivalent to '99999' . round(...) . $rand)
+	return fmt.Sprintf("%s%d%d", c.PartnerId, int64(milliseconds), randomNum)
 }
 
 // parseResponse parses the HTTP response into the provided response object
