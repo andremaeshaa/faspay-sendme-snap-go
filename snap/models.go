@@ -169,3 +169,43 @@ type DetailData struct {
 	Type           string                    `json:"type"`
 	AdditionalInfo *AdditionalInfoDetailData `json:"additionalInfo"`
 }
+
+type CustomerTopupRequest struct {
+	PartnerReferenceNo string                              `json:"partnerReferenceNo"`
+	CustomerNumber     string                              `json:"customerNumber"`
+	Amount             *Amount                             `json:"amount"`
+	TransactionDate    string                              `json:"transactionDate"`
+	AdditionalInfo     *AdditionalInfoCustomerTopupRequest `json:"additionalInfo"`
+}
+
+type AdditionalInfoCustomerTopupRequest struct {
+	SourceAccount          string `json:"sourceAccount"`
+	PlatformCode           string `json:"platformCode"`
+	InstructDate           string `json:"instructDate"`
+	BeneficiaryEmail       string `json:"beneficiaryEmail"`
+	TransactionDescription string `json:"transactionDescription"`
+	CallbackUrl            string `json:"callbackUrl"`
+}
+
+type AdditionalInfoCustomerTopup struct {
+	SourceAccount           string `json:"sourceAccount"`
+	PlatformCode            string `json:"platformCode"`
+	BeneficiaryEmail        string `json:"beneficiaryEmail"`
+	TransactionDate         string `json:"transactionDate"`
+	InstructDate            string `json:"instructDate"`
+	TransactionDescription  string `json:"transactionDescription"`
+	CallbackUrl             string `json:"callbackUrl"`
+	TransactionReference    string `json:"transactionReference"`
+	LatestTransactionStatus string `json:"latestTransactionStatus"`
+	TransactionStatusDesc   string `json:"transactionStatusDesc"`
+}
+
+type CustomerTopupResponse struct {
+	ResponseCode       string                       `json:"responseCode"`
+	ResponseMessage    string                       `json:"responseMessage"`
+	ReferenceNo        string                       `json:"referenceNo"`
+	PartnerReferenceNo string                       `json:"partnerReferenceNo"`
+	CustomerNumber     string                       `json:"customerNumber"`
+	Amount             *Amount                      `json:"amount"`
+	AdditionalInfo     *AdditionalInfoCustomerTopup `json:"additionalInfo"`
+}
