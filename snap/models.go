@@ -24,6 +24,11 @@ type Amount struct {
 	Currency string `json:"currency"`
 }
 
+type AvailableBalance struct {
+	Value    string `json:"value"`
+	Currency string `json:"currency"`
+}
+
 type AdditionalInfoTransferInterBank struct {
 	InstructDate           string `json:"instructDate"`
 	TransactionDescription string `json:"transactionDescription"`
@@ -72,4 +77,95 @@ type ExternalAccountInquiryResponse struct {
 	BeneficiaryBankName    string                  `json:"beneficiaryBankName,omitempty"`
 	Currency               string                  `json:"currency,omitempty"`
 	AdditionalInfo         *AdditionalInfoResponse `json:"additionalInfo,omitempty"`
+}
+
+type StatusTransferRequest struct {
+	OriginalPartnerReferenceNo string `json:"originalPartnerReferenceNo"`
+	OriginalReferenceNo        string `json:"originalReferenceNo"`
+	ServiceCode                string `json:"serviceCode"`
+}
+
+type StatusTransferResponse struct {
+	ResponseCode               string                                `json:"responseCode"`
+	ResponseMessage            string                                `json:"responseMessage"`
+	OriginalReferenceNo        string                                `json:"originalReferenceNo"`
+	OriginalPartnerReferenceNo string                                `json:"originalPartnerReferenceNo"`
+	ServiceCode                string                                `json:"serviceCode"`
+	TransactionDate            string                                `json:"transactionDate"`
+	Amount                     *Amount                               `json:"amount"`
+	BeneficiaryAccountNo       string                                `json:"beneficiaryAccountNo"`
+	BeneficiaryBankCode        string                                `json:"beneficiaryBankCode"`
+	ReferenceNumber            string                                `json:"referenceNumber"`
+	SourceAccountNo            string                                `json:"sourceAccountNo"`
+	LatestTransactionStatus    string                                `json:"latestTransactionStatus"`
+	TransactionStatusDesc      string                                `json:"transactionStatusDesc"`
+	AdditionalInfo             *AdditionalInfoStatusTransferResponse `json:"additionalInfo"`
+}
+
+type AdditionalInfoStatusTransferResponse struct {
+	BeneficiaryAccountName string `json:"beneficiaryAccountName"`
+	BeneficiaryBankName    string `json:"beneficiaryBankName"`
+	TransactionDescription string `json:"transactionDescription"`
+	CallbackUrl            string `json:"callbackUrl"`
+	TransactionStatusDate  string `json:"transactionStatusDate"`
+}
+
+type InquiryBalanceRequest struct {
+	AccountNo string `json:"accountNo"`
+}
+
+type InquiryBalanceResponse struct {
+	ResponseCode    string          `json:"responseCode"`
+	ResponseMessage string          `json:"responseMessage"`
+	AccountNo       string          `json:"accountNo"`
+	AccountInfos    []*AccountInfos `json:"accountInfos"`
+}
+
+type AccountInfos struct {
+	BalanceType      string            `json:"balanceType"`
+	Amount           *Amount           `json:"amount"`
+	AvailableBalance *AvailableBalance `json:"availableBalance"`
+	Status           string            `json:"status"`
+}
+
+type HistoryListRequest struct {
+	FromDateTime   string                        `json:"fromDateTime"`
+	ToDateTime     string                        `json:"toDateTime"`
+	AdditionalInfo *AdditionalHistoryListRequest `json:"additionalInfo"`
+}
+
+type AdditionalHistoryListRequest struct {
+	AccountNo string `json:"accountNo"`
+}
+
+type HistoryListResponse struct {
+	ResponseCode    string                             `json:"responseCode"`
+	ResponseMessage string                             `json:"responseMessage"`
+	DetailData      []*DetailData                      `json:"detailData"`
+	AdditionalInfo  *AdditionalInfoHistoryListResponse `json:"additionalInfo"`
+}
+
+type SourceOfFunds struct {
+	Source string `json:"source"`
+}
+
+type AdditionalInfoDetailData struct {
+	DebitCredit string `json:"debitCredit"`
+}
+
+type AdditionalInfoHistoryListResponse struct {
+	AccountNo    string `json:"accountNo"`
+	FromDateTime string `json:"fromDateTime"`
+	ToDateTime   string `json:"toDateTime"`
+	Message      string `json:"message"`
+}
+
+type DetailData struct {
+	DateTime       string                    `json:"dateTime"`
+	Amount         *Amount                   `json:"amount"`
+	Remark         string                    `json:"remark"`
+	SourceOfFunds  []*SourceOfFunds          `json:"sourceOfFunds"`
+	Status         string                    `json:"status"`
+	Type           string                    `json:"type"`
+	AdditionalInfo *AdditionalInfoDetailData `json:"additionalInfo"`
 }
