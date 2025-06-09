@@ -2,6 +2,7 @@ package snap
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"testing"
 )
@@ -66,4 +67,76 @@ func TestClient_TransferInterBank(t *testing.T) {
 	}
 
 	println(res.ResponseMessage)
+}
+
+func TestClient_InquiryStatus(t *testing.T) {
+	privateKey, err := os.ReadFile("../certs/enc.key")
+	if err != nil {
+		t.Fatalf("Failed to read private key: %v", err)
+	}
+
+	client, err := NewClient("99999", privateKey)
+	if err != nil {
+		t.Fatalf("Failed to create client: %v", err)
+	}
+
+	res, err := client.StatusTransfer(context.Background(), &StatusTransferRequest{
+		OriginalPartnerReferenceNo: "20250609103003234",
+		OriginalReferenceNo:        "53883",
+		ServiceCode:                "18",
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	println(res.ResponseMessage)
+}
+
+func TestClient_InquiryBalance(t *testing.T) {
+	privateKey, err := os.ReadFile("../certs/enc.key")
+	if err != nil {
+		t.Fatalf("Failed to read private key: %v", err)
+	}
+
+	client, err := NewClient("99999", privateKey)
+	if err != nil {
+		t.Fatalf("Failed to create client: %v", err)
+	}
+
+	res, err := client.InquiryBalance(context.Background(), &InquiryBalanceRequest{
+		AccountNo: "9920017573",
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	println(res.ResponseMessage)
+}
+
+func TestClient_HistoryList(t *testing.T) {
+	privateKey, err := os.ReadFile("../certs/enc.key")
+	if err != nil {
+		t.Fatalf("Failed to read private key: %v", err)
+	}
+
+	client, err := NewClient("99999", privateKey)
+	if err != nil {
+		t.Fatalf("Failed to create client: %v", err)
+	}
+
+	res, err := client.HistoryList(context.Background(), &HistoryListRequest{
+		FromDateTime:   "2024-12-01T00:00:00-07:00",
+		ToDateTime:     "2024-12-30T00:00:00-07:00",
+		AdditionalInfo: &AdditionalHistoryListRequest{AccountNo: "9920017573"},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	bytes, err := json.Marshal(res)
+	if err != nil {
+		panic(err)
+	}
+
+	println("response: ", string(bytes))
 }
