@@ -1,8 +1,8 @@
 package snap
 
 const (
-	baseUrlSandbox = "https://account-dev.faspay.co.id"
-	baseUrlProd    = "https://account-staging.faspay.co.id"
+	baseUrlSandbox = "https://account-staging.faspay.co.id"
+	baseUrlProd    = "https://sendme.faspay.co.id"
 )
 
 // API endpoint paths
