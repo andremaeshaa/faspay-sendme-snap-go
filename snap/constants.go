@@ -14,7 +14,8 @@ const (
 	EndpointHistoryList         = "/account/v1.0/transaction-history-list"
 	EndpointCustomerTopup       = "/account/v1.0/emoney/topup"
 	EndpointCustomerTopupStatus = "/account/v1.0/emoney/topup-status"
-	EndpointBillBillInquiry     = "/account/v1.0/transfer-va/inquiry-intrabank"
+	EndpointBillInquiry         = "/account/v1.0/transfer-va/inquiry-intrabank"
+	EndpointBillPayment         = "/account/v1.0/transfer-va/payment-intrabank"
 )
 
 // Default configuration values

@@ -238,3 +238,44 @@ func TestClient_BillInquiry(t *testing.T) {
 
 	println(res.ResponseMessage)
 }
+
+func TestClient_BillPayment(t *testing.T) {
+	privateKey, err := os.ReadFile("../certs/enc_stg.key")
+	if err != nil {
+		t.Fatalf("Failed to read private key: %v", err)
+	}
+
+	client, err := NewClient("99999", privateKey)
+	if err != nil {
+		panic(err)
+	}
+
+	err = client.SetEnv("prod")
+	if err != nil {
+		panic(err)
+	}
+
+	response, err := client.BillPayment(context.Background(), &BillPaymentRequest{
+		PartnerReferenceNo: "20250609162921210",
+		PartnerServiceId:   "    7008",
+		CustomerNo:         "08000047816",
+		VirtualAccountNo:   "700808000047816",
+		VirtualAccountName: "DUMMY VA",
+		SourceAccount:      "9920017573",
+		PaidAmount: &Amount{
+			Value:    "41454.00",
+			Currency: "IDR",
+		},
+		TrxDateTime: "2025-06-09T16:29:21",
+		AdditionalInfo: &AdditionalInfoBillPayment{
+			BillerCode:   "013",
+			InstructDate: "2025-06-09T16:29:21+07:00",
+			CallbackUrl:  "https://245e-103-83-94-10.ngrok-free.app/v1/snap/callback",
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	println(response.ResponseMessage)
+}

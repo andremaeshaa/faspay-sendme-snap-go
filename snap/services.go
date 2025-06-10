@@ -16,6 +16,7 @@ type Services interface {
 	CustomerTopup(ctx context.Context, request *CustomerTopupRequest) (*CustomerTopupResponse, error)
 	CustomerTopupStatus(ctx context.Context, request *CustomerTopupStatusRequest) (*CustomerTopupStatusResponse, error)
 	BillInquiry(ctx context.Context, request *BillInquiryRequest) (*BillInquiryResponse, error)
+	BillPayment(ctx context.Context, request *BillPaymentRequest) (*BillPaymentResponse, error)
 }
 
 // SetEnv sets the environment for the client, switching the base URL between "sandbox" and "prod" environments.
@@ -145,12 +146,28 @@ func (c *Client) CustomerTopupStatus(ctx context.Context, request *CustomerTopup
 }
 
 func (c *Client) BillInquiry(ctx context.Context, request *BillInquiryRequest) (*BillInquiryResponse, error) {
-	resp, err := c.doRequest(ctx, http.MethodPost, EndpointBillBillInquiry, request)
+	resp, err := c.doRequest(ctx, http.MethodPost, EndpointBillInquiry, request)
 	if err != nil {
 		return nil, err
 	}
 
 	var response BillInquiryResponse
+
+	err = c.parseResponse(resp, &response)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+func (c *Client) BillPayment(ctx context.Context, request *BillPaymentRequest) (*BillPaymentResponse, error) {
+	resp, err := c.doRequest(ctx, http.MethodPost, EndpointBillPayment, request)
+	if err != nil {
+		return nil, err
+	}
+
+	var response BillPaymentResponse
 
 	err = c.parseResponse(resp, &response)
 	if err != nil {

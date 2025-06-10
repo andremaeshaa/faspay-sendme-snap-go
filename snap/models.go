@@ -276,3 +276,48 @@ type AdditionalInfoBillInquiryResponse struct {
 	Status        string `json:"status"`
 	Message       string `json:"message"`
 }
+
+type BillPaymentRequest struct {
+	PartnerReferenceNo string                     `json:"partnerReferenceNo"`
+	PartnerServiceId   string                     `json:"partnerServiceId"`
+	CustomerNo         string                     `json:"customerNo"`
+	VirtualAccountNo   string                     `json:"virtualAccountNo"`
+	VirtualAccountName string                     `json:"virtualAccountName"`
+	SourceAccount      string                     `json:"sourceAccount"`
+	PaidAmount         *Amount                    `json:"paidAmount"`
+	TrxDateTime        string                     `json:"trxDateTime"`
+	AdditionalInfo     *AdditionalInfoBillPayment `json:"additionalInfo"`
+}
+
+type AdditionalInfoBillPayment struct {
+	BillerCode   string `json:"billerCode"`
+	InstructDate string `json:"instructDate"`
+	CallbackUrl  string `json:"callbackUrl"`
+}
+
+type VirtualAccountDataBillPayment struct {
+	PartnerReferenceNo string  `json:"partnerReferenceNo"`
+	ReferenceNo        string  `json:"referenceNo"`
+	PartnerServiceId   string  `json:"partnerServiceId"`
+	CustomerNo         string  `json:"customerNo"`
+	VirtualAccountNo   string  `json:"virtualAccountNo"`
+	VirtualAccountName string  `json:"virtualAccountName"`
+	SourceAccount      string  `json:"sourceAccount"`
+	PaidAmount         *Amount `json:"paidAmount"`
+	TrxDateTime        string  `json:"trxDateTime"`
+}
+
+type AdditionalInfoBillPaymentResponse struct {
+	BillerCode   string `json:"billerCode"`
+	InstructDate string `json:"instructDate"`
+	CallbackUrl  string `json:"callbackUrl"`
+	Status       string `json:"status"`
+	Message      string `json:"message"`
+}
+
+type BillPaymentResponse struct {
+	ResponseCode       string                             `json:"responseCode"`
+	ResponseMessage    string                             `json:"responseMessage"`
+	VirtualAccountData *VirtualAccountDataBillPayment     `json:"virtualAccountData"`
+	AdditionalInfo     *AdditionalInfoBillPaymentResponse `json:"additionalInfo"`
+}
