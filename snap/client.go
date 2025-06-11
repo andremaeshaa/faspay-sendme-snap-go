@@ -7,6 +7,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
+	"crypto/tls"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
@@ -50,10 +51,18 @@ func WithHTTPClient(httpClient *http.Client) ClientOption {
 }
 
 // NewClient initializes and returns a new Client instance with the given API key, secret, and optional configurations.
-func NewClient(partnerId string, privateKey []byte, options ...ClientOption) (Services, error) {
+func NewClient(partnerId string, privateKey, sslCert []byte, options ...ClientOption) (Services, error) {
+	caCertPool := x509.NewCertPool()
+	caCertPool.AppendCertsFromPEM(sslCert)
+
 	client := &Client{
 		httpClient: &http.Client{
 			Timeout: time.Duration(DefaultTimeout) * time.Second,
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					RootCAs: caCertPool,
+				},
+			},
 		},
 		PartnerId:  partnerId,
 		privateKey: privateKey,
