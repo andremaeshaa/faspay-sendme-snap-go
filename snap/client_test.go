@@ -7,13 +7,22 @@ import (
 	"testing"
 )
 
+func getCertSSL() []byte {
+	sslCert, err := os.ReadFile("../certs/faspay.crt")
+	if err != nil {
+		panic(err)
+	}
+
+	return sslCert
+}
+
 func TestClient_AccountInquiry(t *testing.T) {
 	privateKey, err := os.ReadFile("../certs/enc.key")
 	if err != nil {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -39,7 +48,7 @@ func TestClient_TransferInterBank(t *testing.T) {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -75,7 +84,7 @@ func TestClient_InquiryStatus(t *testing.T) {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -98,7 +107,7 @@ func TestClient_InquiryBalance(t *testing.T) {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -119,7 +128,7 @@ func TestClient_HistoryList(t *testing.T) {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -147,7 +156,7 @@ func TestClient_CustomerTopup(t *testing.T) {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -186,7 +195,7 @@ func TestClient_CustomerTopupStatus(t *testing.T) {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
@@ -213,11 +222,11 @@ func TestClient_BillInquiry(t *testing.T) {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}
-	err = client.SetEnv("prod")
+	err = client.SetEnv("sandbox")
 	if err != nil {
 		panic(err)
 	}
@@ -245,7 +254,7 @@ func TestClient_BillPayment(t *testing.T) {
 		t.Fatalf("Failed to read private key: %v", err)
 	}
 
-	client, err := NewClient("99999", privateKey)
+	client, err := NewClient("99999", privateKey, getCertSSL())
 	if err != nil {
 		panic(err)
 	}
