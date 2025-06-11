@@ -16,6 +16,7 @@ go get github.com/faspay-team/faspay-sendme-snap-go
 - Configurable HTTP client with timeout options
 - Detailed documentation and examples
 - Secure request signing
+- SSL certificate validation for enhanced security
 
 ## Quick Start
 
@@ -33,25 +34,33 @@ import (
 )
 
 func main() {
-	// Step 1: Load the private key from file
-	privateKeyPath := "./certs/enc.key"
-	privateKey, err := os.ReadFile(privateKeyPath)
-	if err != nil {
-		log.Fatalf("Failed to read private key: %v", err)
-	}
+ // Step 1: Load the private key and SSL certificate from files
+ privateKeyPath := "./certs/enc.key"
+ privateKey, err := os.ReadFile(privateKeyPath)
+ if err != nil {
+ 	log.Fatalf("Failed to read private key: %v", err)
+ }
 
-	// Step 2: Initialize the client
-	partnerId := "99999" // Your 5-digit partner ID
+ // Load the SSL certificate
+ sslCertPath := "./certs/faspay.crt"
+ sslCert, err := os.ReadFile(sslCertPath)
+ if err != nil {
+ 	log.Fatalf("Failed to read SSL certificate: %v", err)
+ }
 
-	// Create a new client with a custom timeout
-	client, err := snap.NewClient(
-		partnerId,
-		privateKey,
-		snap.WithTimeout(60*time.Second), // Optional: Set a custom timeout
-	)
-	if err != nil {
-		log.Fatalf("Failed to initialize client: %v", err)
-	}
+ // Step 2: Initialize the client
+ partnerId := "99999" // Your 5-digit partner ID
+
+ // Create a new client with a custom timeout
+ client, err := snap.NewClient(
+ 	partnerId,
+ 	privateKey,
+ 	sslCert,
+ 	snap.WithTimeout(60*time.Second), // Optional: Set a custom timeout
+ )
+ if err != nil {
+ 	log.Fatalf("Failed to initialize client: %v", err)
+ }
 
 	// Step 3: Set the environment (sandbox or prod)
 	err = client.SetEnv("sandbox")
@@ -90,14 +99,20 @@ func main() {
 ### Client Initialization
 
 ```go
-// Load private key
+// Load private key and SSL certificate
 privateKey, err := os.ReadFile("./certs/enc.key")
 if err != nil {
     log.Fatalf("Failed to read private key: %v", err)
 }
 
+// Load SSL certificate
+sslCert, err := os.ReadFile("./certs/faspay.crt")
+if err != nil {
+    log.Fatalf("Failed to read SSL certificate: %v", err)
+}
+
 // Create a new client with default options
-client, err := snap.NewClient("99999", privateKey)
+client, err := snap.NewClient("99999", privateKey, sslCert)
 if err != nil {
     log.Fatalf("Failed to initialize client: %v", err)
 }
@@ -106,6 +121,7 @@ if err != nil {
 client, err := snap.NewClient(
     "99999", 
     privateKey, 
+    sslCert,
     snap.WithTimeout(60*time.Second)
 )
 if err != nil {
@@ -124,6 +140,7 @@ httpClient := &http.Client{
 client, err := snap.NewClient(
     "99999", 
     privateKey, 
+    sslCert,
     snap.WithHTTPClient(httpClient)
 )
 if err != nil {
@@ -346,11 +363,15 @@ For more detailed examples, see the [examples](./examples) directory. The exampl
 
 ## Certificate Files
 
-The SDK requires a private key file for signing API requests. The private key should be stored in the `certs` directory:
+The SDK requires two certificate files:
 
-- `path/to-private-key/enc.key` - Private key for you're environment
+1. **Private Key** - Used for signing API requests:
+   - `path/to-private-key/enc.key` - Private key for your environment
 
-Make sure to keep these files secure and not commit them to version control.
+2. **SSL Certificate** - Used for secure communication with the Faspay API:
+   - `path/to-ssl-cert/faspay.crt` - SSL certificate for Faspay API
+
+Both files should be stored in the `certs` directory. Make sure to keep these files secure and not commit them to version control.
 
 ## License
 
